@@ -13,6 +13,14 @@ The scraper is searching the `./DATA` **directory** by default. To change that y
 _Line 9_: `directory = "./DATA"`
 > [!NOTE]
 > It iterates through every file in the directory. To speed up the process, it is recommended to limit the amount of files.
+## Requirements
+> How to install the required libraries.
+```
+pip install pdfplumber
+```
+```
+pip install docx
+```
 
 ## Improving
 Suggestions for improvements are welcome.
