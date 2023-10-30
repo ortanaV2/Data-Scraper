@@ -4,6 +4,7 @@ import pdfplumber
 import re
 from docx import Document
 
+error = 0
 while True:
     directory = "./DATA"
     search_key = input("\nEnter keyword: ")
@@ -15,29 +16,38 @@ while True:
 
         #txt-data scrap
         if data_name.endswith(".txt"):
-            with open(dir, "r", encoding="utf-8") as txt_datei:
-                content = txt_datei.read()
-
+            try:
+                with open(dir, "r", encoding="utf-8") as txt_datei:
+                    content = txt_datei.read()
+            except Exception:
+                content = None
+                error+=1
         #pdf-data scrap
         elif data_name.endswith(".pdf"):
-            text = []
-            with pdfplumber.open(f"./DATA/{data_name}") as pdf:
-                for page in pdf.pages:
-                    text.append(page.extract_text())
-            content = " ".join(text)
-            raw = content.split()
-            content = " ".join(raw)
-
+            try:
+                text = []
+                with pdfplumber.open(f"./DATA/{data_name}") as pdf:
+                    for page in pdf.pages:
+                        text.append(page.extract_text())
+                content = " ".join(text)
+                raw = content.split()
+                content = " ".join(raw)
+            except Exception:
+                content = None
+                error+=1
         #docx-data scrap
         elif data_name.endswith(".docx"):
-            doc = Document(f"./DATA/{data_name}")
-            text = []
-            for paragraph in doc.paragraphs:
-                text.append(paragraph.text)
-            content = " ".join(text)
-            words = re.findall(r"\S+", content)
-            content = " ".join(words)
-
+            try:
+                doc = Document(f"./DATA/{data_name}")
+                text = []
+                for paragraph in doc.paragraphs:
+                    text.append(paragraph.text)
+                content = " ".join(text)
+                words = re.findall(r"\S+", content)
+                content = " ".join(words)
+            except Exception:
+                content = None
+                error+=1
         else:
             content = None
         #save scrap-data
@@ -68,6 +78,8 @@ while True:
                     matches.append(f'Word({word_count}): "{search_key}" found in {name}')
     
     #output result
+    if error > 0:
+        print(f"{error} Errors occurred while decoding file-contents.")
     if len(matches) > 0:
         print("\nMatches:\n"+"_"*35)
         for findings in matches:
