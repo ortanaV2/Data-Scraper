@@ -1,4 +1,4 @@
-# Data-Scraper [WIP]
+# Data-Scraper
 > A data-scraper that makes it possible to filter out the most important information from huge amounts of text based data.
 
 The script asks for a ***keyword*** to search for. It compares the keyword with the ***file-name*** and its ***contents***. As soon as it finds the keyword in it, it is listed as a match and output at the end.  
